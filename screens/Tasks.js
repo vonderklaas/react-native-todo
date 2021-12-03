@@ -20,8 +20,9 @@ const TasksScreen = ({ tasks, setTasks }) => {
   const [enteredValue, setEnteredValue] = useState('');
 
   const addTask = () => {
-    if (!enteredValue) {
-      Alert.alert('Warning', 'Please, enter a task!');
+    const enteredText = enteredValue.trim();
+    if (!enteredText || enteredText.length < 1) {
+      Alert.alert('Warning', 'Please, enter a valid task!');
     } else {
       setTasks([
         ...tasks,
@@ -32,49 +33,72 @@ const TasksScreen = ({ tasks, setTasks }) => {
   };
 
   const removeTask = (id) => {
-    setTasks([...tasks.filter((task) => task.id !== id)]);
-    setEnteredValue(null);
+    showConfirmDialog(id);
+  };
+
+  const showConfirmDialog = (id) => {
+    Alert.alert(
+      'Are your sure?',
+      'Are you sure you want to remove this task?',
+      [
+        {
+          text: 'Yes',
+          onPress: () => {
+            setTasks([...tasks.filter((task) => task.id !== id)]);
+            setEnteredValue(null);
+          },
+        },
+        {
+          text: 'No',
+        },
+      ]
+    );
   };
 
   return (
-    <View style={GlobalStyles.page}>
-      <ScrollView style={GlobalStyles.pageWrapper}>
-        <Text style={GlobalStyles.pageTitle}>Tasks</Text>
-        <View style={styles.items}>
-          {tasks.map((task) => {
-            const { text, id } = task;
-            return (
-              <View key={id}>
-                <Task text={text} id={id} removeTask={removeTask} />
-              </View>
-            );
-          })}
-          <View style={styles.addWrapper}>
-            <TextInput
-              value={enteredValue}
-              onChangeText={(value) => setEnteredValue(value)}
-              style={styles.addInput}
-              placeholder='Add task'
+    <ScrollView style={GlobalStyles.pageContainer}>
+      {tasks.map((task) => {
+        const { text, id, createdDate } = task;
+        return (
+          <View key={id}>
+            <Task
+              text={text}
+              id={id}
+              createdDate={createdDate}
+              removeTask={removeTask}
             />
-            <TouchableOpacity onPress={() => addTask()}>
-              <View style={styles.addPlus}>
-                <Text>+</Text>
-              </View>
-            </TouchableOpacity>
           </View>
-        </View>
-      </ScrollView>
-    </View>
+        );
+      })}
+      <View style={styles.addWrapper}>
+        <TextInput
+          style={styles.addInput}
+          value={enteredValue}
+          autoCapitalize='sentences'
+          onChangeText={(value) => setEnteredValue(value)}
+          autoCorrect={true}
+          keyboardType='default'
+          returnKeyType='done'
+          placeholder='Add task...'
+        />
+        <TouchableOpacity
+          style={styles.addPlusContainer}
+          onPress={() => addTask(enteredValue)}
+        >
+          <Text>Add</Text>
+          <View style={styles.addPlus}>
+            <Text style={styles.addText}>+</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  items: {
-    marginTop: 20,
-  },
   addWrapper: {
     padding: 15,
-    marginBottom: 20,
+    marginBottom: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -82,22 +106,30 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   addInput: {
-    width: 250,
-    padding: 15,
-    borderRadius: 60,
+    width: 245,
+    padding: 10,
+    borderRadius: 15,
     borderWidth: 1,
     backgroundColor: '#FFF',
-    borderColor: '#C0C0C0',
+    borderColor: '#e9e1e1',
+  },
+  addPlusContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   addPlus: {
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 25,
+    height: 25,
+    backgroundColor: '#55BCF6',
+    opacity: 0.4,
     borderRadius: 50,
-    borderWidth: 1,
-    backgroundColor: '#FFF',
-    borderColor: '#C0C0C0',
+    marginLeft: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addText: {
+    color: '#FFF',
+    fontSize: 17,
   },
 });
 

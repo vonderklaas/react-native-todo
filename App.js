@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { enableScreens } from 'react-native-screens';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 enableScreens();
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-import HomeScreen from './screens/Home';
 import AboutScreen from './screens/About';
 import TasksScreen from './screens/Tasks';
 
@@ -15,21 +14,29 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ stackAnimation: 'flip' }}>
-        <Stack.Screen
-          name='HomeScreen'
-          component={HomeScreen}
-          options={{ title: 'Home' }}
-        />
-        <Stack.Screen
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ _focused, color, size }) => {
+            let iconName;
+            if (route.name === 'TasksScreen') {
+              iconName = 'ios-list';
+            } else if (route.name === 'AboutScreen') {
+              iconName = 'ios-information-circle';
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarInactiveTintColor: 'gray',
+        })}
+      >
+        <Tab.Screen name='TasksScreen' options={{ title: 'Tasks' }}>
+          {() => <TasksScreen tasks={tasks} setTasks={setTasks} />}
+        </Tab.Screen>
+        <Tab.Screen
           name='AboutScreen'
           component={AboutScreen}
           options={{ title: 'About' }}
         />
-        <Stack.Screen name='TasksScreen' options={{ title: 'Tasks' }}>
-          {() => <TasksScreen tasks={tasks} setTasks={setTasks} />}
-        </Stack.Screen>
-      </Stack.Navigator>
+      </Tab.Navigator>
     </NavigationContainer>
   );
 };

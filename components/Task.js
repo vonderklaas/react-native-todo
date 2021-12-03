@@ -1,14 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-const Task = ({ text, id, removeTask }) => {
+const Task = ({ text, id, createdDate, removeTask }) => {
   return (
     <View style={styles.task}>
       <View style={styles.textWrapper}>
-        <Text>{text}</Text>
+        <Text>Text: {text}</Text>
+        <Text>Date: {createdDate}</Text>
       </View>
-      <TouchableOpacity onPress={() => removeTask(id)}>
-        <View style={styles.square}></View>
+      <TouchableOpacity style={styles.delete} onPress={() => removeTask(id)}>
+        <Text>Delete</Text>
+        <View style={styles.circle}>
+          <Text style={styles.circleText}>-</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -25,20 +29,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   textWrapper: {
+    maxWidth: '75%',
+    flexDirection: 'column',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // overflow: 'hidden',
+    // flexWrap: 'wrap',
+  },
+  delete: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    maxWidth: '90%',
-    overflow: 'hidden',
-    flexWrap: 'wrap',
   },
-  square: {
-    width: 20,
-    height: 20,
-    backgroundColor: '#55BCF6',
+  circle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 25,
+    height: 25,
+    backgroundColor: 'red',
     opacity: 0.4,
-    borderRadius: 5,
-    marginLeft: 15,
+    borderRadius: 50,
+    marginLeft: 10,
+  },
+  circleText: {
+    color: '#FFF',
+    fontSize: 17,
   },
 });
 

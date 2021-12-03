@@ -1,18 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, ScrollView } from 'react-native';
 
 const GlobalStyles = require('../styles/Global');
 
 const AboutScreen = () => {
   return (
-    <View style={GlobalStyles.page}>
-      <ScrollView style={GlobalStyles.pageWrapper}>
-        <Text style={GlobalStyles.pageTitle}>About</Text>
-      </ScrollView>
-    </View>
+    <ScrollView style={GlobalStyles.pageContainer}>
+      <Text style={styles.paragraph}>
+        This is simple Todo application written with help of React Native and
+        few other libraries
+      </Text>
+      <Text style={styles.paragraph}>Version 1.0.1</Text>
+      <Text style={styles.paragraph}>
+        &copy; Copyright 2021 - Nick Garbalau
+      </Text>
+    </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  paragraph: {
+    padding: 20,
+  },
+});
 
 export default AboutScreen;

@@ -1,17 +1,10 @@
-'use strict';
 import { StyleSheet } from 'react-native';
 
 module.exports = StyleSheet.create({
-  page: {
+  pageContainer: {
     flex: 1,
-    backgroundColor: '#E8EAED',
-  },
-  pageWrapper: {
+    backgroundColor: '#b5c2d7d9',
     paddingTop: 20,
     paddingHorizontal: 20,
-  },
-  pageTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
   },
 });
